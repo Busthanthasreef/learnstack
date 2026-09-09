@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <!-- Background Circle -->
+  <circle cx="128" cy="128" r="128" fill="#4479A1"/>
+  
+  <!-- Text 'My' -->
+  <text x="36" y="166" font-family="system-ui, -apple-system, Arial, sans-serif" font-weight="900" font-size="64" letter-spacing="-1" fill="#ffffff">My</text>
+  
+  <!-- Text 'SQL' -->
+  <text x="126" y="166" font-family="system-ui, -apple-system, Arial, sans-serif" font-weight="900" font-size="64" letter-spacing="-1" fill="#F29221">SQL</text>
+  
+  <!-- Stylized Dolphin -->
+  <g stroke="#ffffff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Body -->
+    <path d="M152,65 C139,55 129,75 134,95 C139,115 149,125 164,130 C179,135 199,135 214,145 L204,135 C194,125 184,115 179,100 C174,80 164,70 152,65 Z" fill="#4479A1"/>
+    <!-- Bottom Fin -->
+    <path d="M134,95 C129,105 129,115 134,120 C139,115 139,105 134,95 Z" fill="#4479A1"/>
+    <!-- Side Fin -->
+    <path d="M164,130 C159,140 164,145 169,140 C169,135 166,132 164,130 Z" fill="#4479A1"/>
+    <!-- Eye -->
+    <circle cx="149" cy="75" r="2.5" fill="#ffffff" stroke="none"/>
+  </g>
+</svg>
