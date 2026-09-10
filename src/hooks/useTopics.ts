@@ -5,14 +5,20 @@ import { topics as builtInTopics } from "../data/topics";
 const STORAGE_KEY = "learnstack-user-topics";
 
 export function useTopics() {
-  const [topics, setTopics] = useState<Topic[]>([]);
+  const [topics, setTopics] = useState<Topic[]>(() => {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      const userTopics: Topic[] = stored ? JSON.parse(stored) : [];
+      return [...builtInTopics, ...userTopics];
+    } catch (error) {
+      return builtInTopics;
+    }
+  });
 
   const loadTopics = useCallback(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       const userTopics: Topic[] = stored ? JSON.parse(stored) : [];
-      
-      // Combine built-in topics and user topics, prioritizing user topics if IDs collide (they shouldn't)
       setTopics([...builtInTopics, ...userTopics]);
     } catch (error) {
       console.error("Failed to load user topics from localStorage", error);
@@ -21,6 +27,7 @@ export function useTopics() {
   }, []);
 
   useEffect(() => {
+    // Only used to sync across tabs or refresh
     loadTopics();
   }, [loadTopics]);
 
