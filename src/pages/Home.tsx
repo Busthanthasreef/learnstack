@@ -1,11 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Search } from "lucide-react";
 import { Container } from "../components/layout/Container";
 import { TopicCard } from "../components/ui/TopicCard";
 import { useTopics } from "../hooks/useTopics";
+import { searchMatches } from "../utils/search";
+import { useDebounce } from "../hooks/useDebounce";
 
 export function Home() {
   const [searchQuery, setSearchQuery] = useState("");
+  const debouncedSearchQuery = useDebounce(searchQuery, 300);
 
   useEffect(() => {
     document.title = "LearnStack — Learn Programming. Build Your Skills.";
@@ -22,18 +25,31 @@ export function Home() {
 
   const { topics } = useTopics();
 
-  const filteredTopics = topics
-    .map((topic, index) => ({ topic, originalIndex: index }))
-    .filter(({ topic }) => 
-      topic.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-      topic.description.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+  const filteredTopics = useMemo(() => {
+    return topics
+      .map((topic, index) => ({ topic, originalIndex: index }))
+      .filter(({ topic }) => 
+        searchMatches(topic.title, debouncedSearchQuery) || 
+        searchMatches(topic.description, debouncedSearchQuery) ||
+        searchMatches(topic.category, debouncedSearchQuery) ||
+        (topic.tags && topic.tags.some(tag => searchMatches(tag, debouncedSearchQuery)))
+      );
+  }, [topics, debouncedSearchQuery]);
 
   return (
     <div className="flex flex-col w-full">
-      <section className="pt-6 pb-8 md:pt-8 md:pb-12">
+      <section className="pt-2 pb-8 md:pt-4 md:pb-12">
         <Container>
-          <div className="mb-6 relative max-w-xl mx-auto">
+          <div className="text-center mb-10">
+            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600">
+              Find MERN Stack Topics Here!
+            </h1>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Explore our comprehensive curriculum and level up your full-stack development skills today.
+            </p>
+          </div>
+
+          <div className="mb-10 relative max-w-xl mx-auto">
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
               <Search className="w-5 h-5 text-muted-foreground" />
             </div>
@@ -48,7 +64,7 @@ export function Home() {
 
           {filteredTopics.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-muted-foreground text-lg">No topics found matching "{searchQuery}"</p>
+              <p className="text-muted-foreground text-lg">No matching topics found.</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

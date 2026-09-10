@@ -1,6 +1,7 @@
 import type { TopicContent } from "../../types";
 
 import javascript from "./javascript";
+import advancedJavascript from "./advanced-javascript";
 import nodejs from "./nodejs";
 import mongodb from "./mongodb";
 import dsaBasics from "./dsa-basics";
@@ -14,6 +15,7 @@ import typescript from "./typescript";
 
 export const learningContent: Record<string, TopicContent> = {
   "javascript": javascript,
+  "advanced-javascript": advancedJavascript,
   "nodejs": nodejs,
   "mongodb": mongodb,
   "dsa-basics": dsaBasics,

@@ -1,5 +1,6 @@
 import type { Topic } from "../types";
 import javascript from "./topics/javascript";
+import advancedJavascript from "./topics/advanced-javascript";
 import nodejs from "./topics/nodejs";
 import mongodb from "./topics/mongodb";
 import dsaBasics from "./topics/dsa-basics";
@@ -13,6 +14,7 @@ import typescript from "./topics/typescript";
 
 export const topics: Topic[] = [
   javascript,
+  advancedJavascript,
   nodejs,
   mongodb,
   dsaBasics,

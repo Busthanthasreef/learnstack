@@ -7,10 +7,13 @@ import { Button } from "../components/ui/Button";
 import { TopicCard } from "../components/ui/TopicCard";
 import { AddTopicModal } from "../components/ui/AddTopicModal";
 import { useTopics } from "../hooks/useTopics";
+import { searchMatches } from "../utils/search";
+import { useDebounce } from "../hooks/useDebounce";
 
 export function Topics() {
   const { topics, addTopic } = useTopics();
   const [searchQuery, setSearchQuery] = useState("");
+  const debouncedSearchQuery = useDebounce(searchQuery, 300);
   const [categoryFilter, setCategoryFilter] = useState("All Categories");
   const [difficultyFilter, setDifficultyFilter] = useState("All Difficulties");
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -28,12 +31,11 @@ export function Topics() {
   const filteredTopics = useMemo(() => {
     return topics.filter((topic) => {
       // 1. Search filter
-      const searchLower = searchQuery.toLowerCase();
       const matchesSearch = 
-        searchLower === "" || 
-        topic.title.toLowerCase().includes(searchLower) ||
-        topic.description.toLowerCase().includes(searchLower) ||
-        (topic.tags && topic.tags.some(tag => tag.toLowerCase().includes(searchLower)));
+        searchMatches(topic.title, debouncedSearchQuery) ||
+        searchMatches(topic.description, debouncedSearchQuery) ||
+        searchMatches(topic.category, debouncedSearchQuery) ||
+        (topic.tags && topic.tags.some(tag => searchMatches(tag, debouncedSearchQuery)));
 
       // 2. Category filter
       const matchesCategory = 
@@ -47,7 +49,7 @@ export function Topics() {
 
       return matchesSearch && matchesCategory && matchesDifficulty;
     });
-  }, [topics, searchQuery, categoryFilter, difficultyFilter]);
+  }, [topics, debouncedSearchQuery, categoryFilter, difficultyFilter]);
 
   const handleAddTopic = (newTopic: any) => {
     addTopic(newTopic);
@@ -148,7 +150,7 @@ export function Topics() {
         ) : filteredTopics.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-center space-y-3">
             <Search size={40} className="text-muted-foreground/50 mb-2" />
-            <h2 className="text-2xl font-semibold">No topics found</h2>
+            <h2 className="text-2xl font-semibold">No matching topics found.</h2>
             <p className="text-muted-foreground max-w-sm">
               We couldn't find any topics matching your current search and filters.
             </p>

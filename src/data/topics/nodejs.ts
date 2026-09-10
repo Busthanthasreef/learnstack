@@ -3,7 +3,7 @@ import type { Topic } from "../../types";
 const nodejs: Topic = {
   id: "t_nodejs",
   slug: "nodejs",
-  title: "Node.js",
+  title: "Node & ExpressJS",
   description: "JavaScript runtime built on Chrome's V8 JavaScript engine. Build scalable network applications.",
   difficulty: "Intermediate",
   category: "Backend",

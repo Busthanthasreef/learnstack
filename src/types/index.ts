@@ -49,9 +49,27 @@ export interface Question {
   explanation: string;
 }
 
+export interface LearningSubtopic {
+  id: string;
+  title: string;
+}
+
+export interface LearningMainTopic {
+  id: string;
+  title: string;
+  subtopics: LearningSubtopic[];
+}
+
+export interface LearningSession {
+  id: string;
+  title: string;
+  mainTopics: LearningMainTopic[];
+}
+
 export interface LearningTopic {
   id: string;
   title: string;
+  sessions?: LearningSession[];
 }
 
 export interface TQuestion {
